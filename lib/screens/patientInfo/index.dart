@@ -1,7 +1,7 @@
-import 'package:doctorapp/models/patientListModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:doctorapp/screens/patientSearch/index.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 
@@ -15,23 +15,68 @@ class PatientInfoScreen extends StatefulWidget {
 }
 
 class _PatientInfoScreenState extends State<PatientInfoScreen> {
+  var db = FirebaseFirestore.instance;
+  Map<String, dynamic?> info = {};  // Will hold all patient info
+  String? arg = "";                // Will hold the Doc ID of the patient pressed on patientSearch
+
+  void setArgs(String? args) {
+    arg = args;
+  }
+
+  void getPatientInfo() {
+    db.collection("patients").doc(arg).get().then(  // Get all documents from the patients collection
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic?>;
+        info = data;  // Store into info variable to be used outside of this block
+      },
+      onError: (e) => print("ERROR"),
+    );
+  }
+
+  // @override 
+  // void initState() {
+  //   super.initState();
+  //   getPatientInfo();
+  //   //print("PUSSY ${patients.length}");
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final String? args = ModalRoute.of(context)?.settings.arguments as String?;
-    print("FUCK ${args}");
-
+    final String? args = ModalRoute.of(context)?.settings.arguments as String?;  // Extract the argument from patientSearch
+    setArgs(args);     // Use argument to set arg, arg will be used outside of this block
+    getPatientInfo();  // Fetch patient info from Firestore
+  
     return Scaffold(
       appBar: appBar(),
-      body: Center(child: Text("${args}"),)
+      body: Column(
+        children: [
+          Text(info["fName"]),
+          Text(info["mName"]),
+          Text(info["lName"]),
+          Text(info["dob"]),
+          Text(info["bloodGroup"]),
+          Text(info["RH Factor"]),
+          Text(info["Marital Status"]),
+          Text(info["age"]),
+          Text(info["phoneResidence"]),
+          Text(info["mobilePhone"]),
+          Text(info["email"]),
+          Text(info["eCName"]),
+          Text(info["eCPhone"]),
+          Text(info["currentIllnesses"]),
+          Text(info["previousIllnesses"]),
+          Text(info["allergies"]),
+        ],
+      )
     );
   }
 
   AppBar appBar() {
     return AppBar(
-      title: const Text( 'Patient Info',  // [title] is the the text at the top of the screen
+      title: const Text( 'Patient Information',  // [title] is the the text at the top of the screen
         style: TextStyle(
           color: Colors.black,
-          fontSize: 28,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
       ),

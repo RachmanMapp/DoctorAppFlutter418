@@ -30,7 +30,7 @@ class _PatientSearchScreen extends State<PatientSearchScreen> {
   void getPatients() {
     db.collection("patients").get().then(  // Get all documents from the patients collection
       (querySnapshot) {
-        print("SUCCESS");
+        //print("SUCCESS");
         for (var docSnapshot in querySnapshot.docs) {  // For every patient in the collection
           // Add patient's first and last name into the List of patients
           patients.add(
@@ -43,7 +43,7 @@ class _PatientSearchScreen extends State<PatientSearchScreen> {
         }
         
         isDataLoaded = true;
-        print(isDataLoaded);
+        //print(isDataLoaded);
         incrementCounter();
       },
       onError: (e) => print("ERROR"),
@@ -54,7 +54,7 @@ class _PatientSearchScreen extends State<PatientSearchScreen> {
   void initState() {
     super.initState();
     getPatients();
-    print("PUSSY ${patients.length}");
+    //print("PUSSY ${patients.length}");
   }
 
   @override
@@ -82,11 +82,9 @@ class _PatientSearchScreen extends State<PatientSearchScreen> {
                     itemBuilder: (context, index) {  // Builds each item (Patient Name on screen)
                       return GestureDetector(
                         onTap: () {
-                          print("TAP AT ${patients[index].id}");
-                          Navigator.pushNamed(context, '/patientInfo', arguments: patients[index].id);  // Pass arguments AND GO THERE?
-                          // Get.to(PatientInfoScreen());
-                          // Get.to(PatientInfoScreen(), arguments: {patients[index].id});  // Pass ID to Info Screen
-
+                          // Navigate to PatientInfoScreen & pass argument.
+                          // Argument is the patients Firestore Document ID, this is used to fetch all their data
+                          Navigator.pushNamed(context, '/patientInfo', arguments: patients[index].id); 
                         },
                         child: Container(
                           height: 64,
@@ -120,7 +118,7 @@ class _PatientSearchScreen extends State<PatientSearchScreen> {
       title: const Text( 'Patients',  // [title] is the the text at the top of the screen
         style: TextStyle(
           color: Colors.black,
-          fontSize: 28,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
       ),
