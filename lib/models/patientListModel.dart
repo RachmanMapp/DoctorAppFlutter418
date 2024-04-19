@@ -1,14 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 
 class PatientListModel {
   String fName;
   String lName;
+  String id;
 
   PatientListModel({
     required this.fName,
     required this.lName,
+    required this.id,
   });
 
   // Function to get first and last name of every patient on Firestore and store them in a List
@@ -21,11 +24,12 @@ class PatientListModel {
         print("SUCCESS");
         for (var docSnapshot in querySnapshot.docs) {  // For every patient in the collection
           
-          // Add patient's first and last name into the List of patients
+          // Add patient's first name, last name, and document ID (Firestore) into the List of patients
           patients.add(
             PatientListModel(
               fName: "${docSnapshot.data()['fName']}",
-              lName: "${docSnapshot.data()['lName']}"
+              lName: "${docSnapshot.data()['lName']}",
+              id: docSnapshot.id,
             ),
           );
 

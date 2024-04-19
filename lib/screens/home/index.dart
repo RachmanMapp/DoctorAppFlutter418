@@ -8,7 +8,7 @@ import 'package:doctorapp/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:doctorapp/screens/patientInfo/index.dart';
+import 'package:doctorapp/screens/patientSearch/index.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -342,9 +342,9 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
-              InkWell(
+              InkWell(  // [Patient Search Button] at bottom of screen
                 onTap: () {
-                  Get.to(GeneralPatientInformationScreen());
+                  Get.to(PatientSearchScreen());
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 15),
@@ -353,9 +353,9 @@ class _HomeState extends State<Home> {
                   decoration: BoxDecoration(
                       color: ColorssA.primaryColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Center(
+                  child: const Center(
                     child: Text(
-                      'Patient Info',
+                      'Patient Search',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
